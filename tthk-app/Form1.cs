@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -88,7 +89,26 @@ namespace tthk_app
                 Controls.Add(r2);
 
             }
-            else if(e.Node.Text == "")
+            else if(e.Node.Text == "Tekstkast-TextBox")
+            {
+                txt_box = new TextBox();
+                txt_box.Multiline = true;
+                txt_box.Text = "";
+                txt_box.Location = new Point(300, 300);
+                txt_box.Width = 200;
+                txt_box.Height = 200;
+                Controls.Add(txt_box);
+                string text;
+                try
+                {
+                    text = File.ReadAllText("result.txt");
+                }
+                catch (FileNotFoundException exception)
+                {
+                       text = "Teskt puutub";
+                }
+                
+            }
         }
 
         private void R1_CheckedChanged(object sender, EventArgs e)
