@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,6 +20,9 @@ namespace tthk_app
         CheckBox box_btn, box_lbl;
         RadioButton r1, r2;
         TextBox txt_box;
+        PictureBox pic_box;
+        TabControl tabcontroll;
+        TabPage tab_1, tab_2, tab_3;
         public Form1()
         {
             this.Height = 500;
@@ -35,6 +39,9 @@ namespace tthk_app
             tn.Nodes.Add(new TreeNode("Märkeruut-Checkbox"));
             tn.Nodes.Add(new TreeNode("Radionupp-Radiobutton"));
             tn.Nodes.Add(new TreeNode("Tekstkast-TextBox"));
+            tn.Nodes.Add(new TreeNode("Pildikast-Picturebox"));
+            tn.Nodes.Add(new TreeNode("Kaart-TabControl"));
+            tn.Nodes.Add(new TreeNode("MessageBox"));
             tree.Nodes.Add(tn);
             this.Controls.Add(tree);
 
@@ -103,11 +110,74 @@ namespace tthk_app
                 {
                     text = File.ReadAllText("result.txt");
                 }
-                catch (FileNotFoundException exception)
+                catch (FileNotFoundException exseption)
                 {
                        text = "Teskt puutub";
                 }
-                
+            }
+            else if (e.Node.Text == "Pildikast-Picturebox")
+            {
+                pic_box = new PictureBox();
+                pic_box.Image = new Bitmap("1.jpg");
+                pic_box.Location = new Point(300, 0);
+                pic_box.Size = new Size(300, 300);
+                pic_box.SizeMode = PictureBoxSizeMode.StretchImage;
+                pic_box.BorderStyle = BorderStyle.Fixed3D;
+                Controls.Add(pic_box);
+            }
+            else if (e.Node.Text == "Kaart-TabControl")
+            {
+                tabcontroll = new TabControl();
+                tabcontroll.Location = new Point(300, 300);
+                tabcontroll.Size = new Size(200, 100);
+                tab_1 = new TabPage("Java");
+                tab_2 = new TabPage("Python");
+                tab_3 = new TabPage("C#");
+
+                string tabctl = Interaction.InputBox("Millist programmeerimiskeelt näidata?", "Inputbox", "C# , Python");
+                if(tabctl == "c#" || tabctl == "C#")
+                {
+                    Controls.Add(tabcontroll);
+                    tabcontroll.Controls.Add(tab_1);
+                    tab_1.BackColor = Color.Red;
+                    tabcontroll.Controls.Add(tab_2);
+                    tab_2.BackColor = Color.Gold;
+                    tabcontroll.Controls.Add(tab_3);
+                    tab_3.BackColor = Color.DarkGoldenrod;
+                    tabcontroll.SelectedTab = tab_3;
+
+                }
+                else if (tabctl == "Python")
+                {
+                    Controls.Add(tabcontroll);
+                    tabcontroll.Controls.Add(tab_1);
+                    tabcontroll.Controls.Add(tab_2);
+                    tabcontroll.Controls.Add(tab_3);
+                    tabcontroll.SelectedTab = tab_2;
+                }
+               
+           
+             
+
+            }
+            else if (e.Node.Text == "MessageBox")
+            {
+                MessageBox.Show("MessageBox", "Kõige listsam aken");
+                var answer = MessageBox.Show("Tahad InputBoxi näha?", "Aken koos nupudega", MessageBoxButtons.YesNo);
+                if (answer == DialogResult.Yes)
+                {
+                    string text = Interaction.InputBox("Sisesta siia mingi tekst", "InputBox", "Mingi tekst");
+                    var text2 = MessageBox.Show("Tahad testi salvestaga?", "Aken", MessageBoxButtons.YesNoCancel);
+                    if (text2 == DialogResult.Yes)
+                    {
+                        var text3 = MessageBox.Show("Tahad label näga?", "Näga Label", MessageBoxButtons.YesNoCancel);
+                        if(text3 == DialogResult.Yes)
+                        {
+                            Controls.Add(lbl);
+                            lbl.Text = text;
+                        }
+                    }
+                }
             }
         }
 
