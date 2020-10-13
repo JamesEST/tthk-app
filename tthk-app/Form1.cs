@@ -9,156 +9,183 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace tthk_app
 {
     public partial class Form1 : Form
     {
-        TreeView tree;
-        Button btn;
-        Label lbl;
-        CheckBox box_btn, box_lbl;
+        private bool status;
+        private bool status_pic;
+        TreeView _tree;
+        Button _btn;
+        Label _lbl;
+        CheckBox _box_btn, _box_lbl;
         RadioButton r1, r2;
-        TextBox txt_box;
-        PictureBox pic_box;
-        TabControl tabcontroll;
-        TabPage tab_1, tab_2, tab_3;
-        ListBox List1;
-        private Color[] Color_List;
+        TextBox _txt_box;
+        PictureBox _pic_box;
+        TabControl _tabcontroll;
+        TabPage _tab_1, _tab_2, _tab_3;
+        ListBox _List1;
+        DataGridView _dataGrid;
+        private Color[] _Color_List;
         public Form1()
         {
-            this.Height = 500;
-            this.Width = 800;
+            //Form
+            this.Height = 900;
+            this.Width = 1200;
             this.Text = "Vorm elementidega";
-            tree = new TreeView();
-            tree.Dock = DockStyle.Left;
-            tree.AfterSelect += Tree_AfterSelect;
-
-
+            
+            //TreeView
+            _tree = new TreeView();
+            _tree.Dock = DockStyle.Left;
+            _tree.AfterSelect += Tree_AfterSelect;
+            _tree.Width = 160;
             TreeNode tn = new TreeNode("Elemendid");
-            tn.Nodes.Add(new TreeNode("Nupp-Button"));
-            tn.Nodes.Add(new TreeNode("Sint-Label"));
-            tn.Nodes.Add(new TreeNode("Märkeruut-Checkbox"));
-            tn.Nodes.Add(new TreeNode("Radionupp-Radiobutton"));
-            tn.Nodes.Add(new TreeNode("Tekstkast-TextBox"));
-            tn.Nodes.Add(new TreeNode("Pildikast-Picturebox"));
-            tn.Nodes.Add(new TreeNode("Kaart-TabControl"));
-            tn.Nodes.Add(new TreeNode("MessageBox"));
-            tn.Nodes.Add(new TreeNode("ListBox"));
-            tn.Nodes.Add(new TreeNode("DataGridView"));
             tn.Nodes.Add(new TreeNode("Menu"));
-            tree.Nodes.Add(tn);
-            this.Controls.Add(tree);
+            tn.Nodes.Add(new TreeNode("ListBox"));
+            tn.Nodes.Add(new TreeNode("MessageBox"));
+            tn.Nodes.Add(new TreeNode("Sint-Label"));
+            tn.Nodes.Add(new TreeNode("Nupp-Button"));
+            tn.Nodes.Add(new TreeNode("DataGridView"));
+            tn.Nodes.Add(new TreeNode("Kaart-TabControl"));
+            tn.Nodes.Add(new TreeNode("Tekstkast-TextBox"));
+            tn.Nodes.Add(new TreeNode("Märkeruut-Checkbox"));
+            tn.Nodes.Add(new TreeNode("Pildikast-Picturebox"));
+            tn.Nodes.Add(new TreeNode("Radionupp-Radiobutton"));
+            
+            _tree.Nodes.Add(tn);
+            this.Controls.Add(_tree);
 
             //Button
-            btn = new Button();
-            btn.Text = "Vajuta siia";
-            btn.Location = new Point(200, 100);
-            btn.Height = 50;
-            btn.Width = 100;
-            btn.Click += Btn_Click;
+            _btn = new Button
+            {
+                Text = "Vajuta siia", 
+                Location = new Point(170, 300), 
+                Height = 50, Width = 100
+            };
+            _btn.Click += Btn_Click;
+            
             //Label
-            lbl = new Label();
-            lbl.Size = new Size(150, 30);
-            lbl.Text = "Tarkavara arendajad";
-            lbl.Location = new Point(150, 200);
+            _lbl = new Label();
+            _lbl.Size = new Size(150, 30);
+            _lbl.Text = "Tarkavara arendajad";
+            _lbl.Location = new Point(500, 400);
         }
 
         private void Tree_AfterSelect(object sender, TreeViewEventArgs e)
         {
             if (e.Node.Text == "Nupp-Button")
             {
-                this.Controls.Add(btn);
+                Controls.Add(_btn);
+                status = true;
             }
             else if (e.Node.Text == "Sint-Label")
             {
-                this.Controls.Add(lbl);
+                Controls.Add(_lbl);
             }
             else if (e.Node.Text == "Märkeruut-Checkbox")
             {
-                box_btn = new CheckBox();
-                box_btn.Text = "Näine nupp";
-                box_btn.Location = new Point(200,30);
-                this.Controls.Add(box_btn);
-                box_lbl = new CheckBox();
-                box_lbl.Text = "Näita silt";
-                box_lbl.Location = new Point(200, 70);
-                this.Controls.Add(box_lbl);
-                box_btn.CheckedChanged += Box_btn_CheckedChanged;
-                box_lbl.CheckedChanged += Box_lbl_CheckedChanged;
+                _box_btn = new CheckBox
+                {
+                    Text = "Näine nupp", 
+                    Location = new Point(170, 100)
+                };
+                _box_lbl = new CheckBox
+                {
+                    Text = "Näita silt", 
+                    Location = new Point(170, 120)
+                };
+                Controls.Add(_box_btn);
+                Controls.Add(_box_lbl);
+                _box_btn.CheckedChanged += Box_btn_CheckedChanged;
+                _box_lbl.CheckedChanged += Box_lbl_CheckedChanged;
             }
             else if(e.Node.Text == "Radionupp-Radiobutton")
             {
-                r1 = new RadioButton();
-                r1.Text = "Vasakule";
-                r1.Location = new Point(300, 30);
-                r1.CheckedChanged += R1_CheckedChanged;
+                r1 = new RadioButton
+                {
+                    Text = "Vasakule", 
+                    Location = new Point(170, 30),
+                    Checked = true
+                };
+                r1.CheckedChanged += R1OnCheckedChanged;
+
+                r2 = new RadioButton
+                {
+                    Text = "Paremale", 
+                    Location = new Point(170, 50)
+                };
+                r2.CheckedChanged += R1OnCheckedChanged;
                 Controls.Add(r1);
-                r2 = new RadioButton();
-                r2.Text = "Paremale";
-                r2.Location = new Point(300, 70);
-                r2.CheckedChanged += R1_CheckedChanged;
                 Controls.Add(r2);
 
             }
             else if(e.Node.Text == "Tekstkast-TextBox")
             {
-                txt_box = new TextBox();
-                txt_box.Multiline = true;
-                txt_box.Text = "";
-                txt_box.Location = new Point(300, 300);
-                txt_box.Width = 200;
-                txt_box.Height = 200;
-                Controls.Add(txt_box);
+                _txt_box = new TextBox
+                {
+                    Multiline = true,
+                    Text = "",
+                    Location = new Point(300, 500),
+                    Width = 200,
+                    Height = 200
+                };
+                Controls.Add(_txt_box);
                 string text;
                 try
                 {
                     text = File.ReadAllText("result.txt");
                 }
-                catch (FileNotFoundException exseption)
+                catch
                 {
-                       text = "Teskt puutub";
+                    text = "Tekst puudub";
                 }
             }
             else if (e.Node.Text == "Pildikast-Picturebox")
             {
-                pic_box = new PictureBox();
-                pic_box.Image = new Bitmap("1.jpg");
-                pic_box.Location = new Point(300, 0);
-                pic_box.Size = new Size(300, 300);
-                pic_box.SizeMode = PictureBoxSizeMode.StretchImage;
-                pic_box.BorderStyle = BorderStyle.Fixed3D;
-                Controls.Add(pic_box);
+                _pic_box = new PictureBox
+                {
+                    Image = new Bitmap("1.png"),
+                    Location = new Point(300, 0),
+                    Size = new Size(600, 400),
+                    SizeMode = PictureBoxSizeMode.StretchImage,
+                    BorderStyle = BorderStyle.Fixed3D
+                };
+                Controls.Add(_pic_box);
+                status_pic = true;
             }
             else if (e.Node.Text == "Kaart-TabControl")
             {
-                tabcontroll = new TabControl();
-                tabcontroll.Location = new Point(300, 300);
-                tabcontroll.Size = new Size(200, 100);
-                tab_1 = new TabPage("Java");
-                tab_2 = new TabPage("Python");
-                tab_3 = new TabPage("C#");
+                _tabcontroll = new TabControl
+                {
+                    Location = new Point(300, 300), 
+                    Size = new Size(200, 100)
+                };
+                _tab_1 = new TabPage("Java");
+                _tab_2 = new TabPage("Python");
+                _tab_3 = new TabPage("C#");
 
                 string tabctl = Interaction.InputBox("Millist programmeerimiskeelt näidata?", "Inputbox", "C# , Python");
                 if(tabctl == "c#" || tabctl == "C#")
                 {
-                    Controls.Add(tabcontroll);
-                    tabcontroll.Controls.Add(tab_1);
-                    tab_1.BackColor = Color.Red;
-                    tabcontroll.Controls.Add(tab_2);
-                    tab_2.BackColor = Color.Gold;
-                    tabcontroll.Controls.Add(tab_3);
-                    tab_3.BackColor = Color.DarkGoldenrod;
-                    tabcontroll.SelectedTab = tab_3;
+                    Controls.Add(_tabcontroll);
+                    _tabcontroll.Controls.Add(_tab_1);
+                    _tab_1.BackColor = Color.Red;
+                    _tabcontroll.Controls.Add(_tab_2);
+                    _tab_2.BackColor = Color.Gold;
+                    _tabcontroll.Controls.Add(_tab_3);
+                    _tab_3.BackColor = Color.DarkGoldenrod;
+                    _tabcontroll.SelectedTab = _tab_3;
 
                 }
                 else if (tabctl == "Python")
                 {
-                    Controls.Add(tabcontroll);
-                    tabcontroll.Controls.Add(tab_1);
-                    tabcontroll.Controls.Add(tab_2);
-                    tabcontroll.Controls.Add(tab_3);
-                    tabcontroll.SelectedTab = tab_2;
+                    Controls.Add(_tabcontroll);
+                    _tabcontroll.Controls.Add(_tab_1);
+                    _tabcontroll.Controls.Add(_tab_2);
+                    _tabcontroll.Controls.Add(_tab_3);
+                    _tabcontroll.SelectedTab = _tab_2;
                 }
             }
             else if (e.Node.Text == "MessageBox")
@@ -174,56 +201,82 @@ namespace tthk_app
                         var text3 = MessageBox.Show("Tahad label näga?", "Näga Label", MessageBoxButtons.YesNoCancel);
                         if(text3 == DialogResult.Yes)
                         {
-                            Controls.Add(lbl);
-                            lbl.Text = text;
+                            Controls.Add(_lbl);
+                            _lbl.Text = text;
                         }
                     }
                 }
             }
             else if (e.Node.Text == "ListBox")
             {
-                string[] Color_Name = new string[] { "Kollane", "Punane", "Sinine", "Roheline" };
-                Color_List = new Color[] { Color.Yellow, Color.Red, Color.Blue, Color.Green };
-                List1 = new ListBox();
-                foreach (var i in Color_List)
+                string[] _colorName = new string[] { "Kollane", "Punane", "Sinine", "Roheline" };
+                _Color_List = new Color[] { Color.Yellow, Color.Red, Color.Blue, Color.Green };
+                _List1 = new ListBox
                 {
-                    List1.Items.Add(i);
+                    Location = new Point(550, 500),
+                    Width = _colorName.OrderByDescending(n => n.Length).First().Length * 10,
+                    Height = _colorName.Length * 15
+                };
+                foreach (var i in _Color_List)
+                {
+                    _List1.Items.Add(i);
                 }
-                Controls.Add(List1);
-                List1.Location = new Point(350, 50);
-                List1.Width = Color_Name.OrderByDescending(n => n.Length).First().Length * 10;
-                List1.SelectedIndexChanged += List1_SelectedIndexChanged;
-                List1.Height = Color_Name.Length * 15;
+                
+                _List1.SelectedIndexChanged += List1_SelectedIndexChanged;
+                Controls.Add(_List1); 
             }
             else if ( e.Node.Text == "DataGridView")
             {
-                DataSet data = new DataSet("Näide");
-                data.ReadXml("");
-                DataGridView dgv = new DataGridView();
-                dgv.Location = new Point(200, 200);
-                dgv.Width = 250;
-                dgv.Height = 250;
-                dgv.DataMember = "data";
-                dgv.AutoGenerateColumns = true;
-                dgv.DataSource = data;
-                Controls.Add(dgv);
+                DataSet dataSet = new DataSet("Näide");
+                dataSet.ReadXml("..//..//files//simple.xml");
+                _dataGrid = new DataGridView
+                {
+                    DataSource = dataSet,
+                    AutoGenerateColumns = true,
+                    DataMember = "email",
+                    Location = new Point(700, 500),
+                    Height = 200,
+                    Width = 200
+                };
+                Controls.Add(_dataGrid);
             }
             else if (e.Node.Text == "Menu")
             {
                 MainMenu menu = new MainMenu();
                 MenuItem menuitem1 = new MenuItem("File");
                 MenuItem menuItem2 = new MenuItem("My");
+                
                 menuitem1.MenuItems.Add("Exit", new EventHandler(menuItem1_exit));
                 menuItem2.MenuItems.Add("Random Color", new EventHandler(RandomColor_Menu));
+                menuItem2.MenuItems.Add("Radiobutton OFF", new EventHandler(RadioButtonOff));
+                menuItem2.MenuItems.Add("Picturebox ON/OFF", new EventHandler(PictureboxONOFF));
                 menu.MenuItems.Add(menuitem1);
                 menu.MenuItems.Add(menuItem2);
+               
                 this.Menu = menu;
+            }
+        }
+
+        private void R1OnCheckedChanged(object sender, EventArgs e)
+        {
+
+            if (r1.Checked)
+            {
+                _btn.Location = new Point(170, 300);
+            }
+
+            if (r2.Checked)
+            {
+                _btn.Location = new Point(950, 300);
             }
         }
 
         private void menuItem1_exit(object sender, EventArgs e)
         {
-            
+            if (MessageBox.Show("Kas sa oled kindel?", "Küsimus", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                Dispose();
+            }
         }
 
         private void RandomColor_Menu(object sender, EventArgs e)
@@ -233,61 +286,78 @@ namespace tthk_app
             this.BackColor = randomColor; 
 
         }
-        private void List1_SelectedIndexChanged(object sender, EventArgs e)
+        
+        private void RadioButtonOff(object sender, EventArgs e)
         {
-            ListBox lb = sender as ListBox;
-            lb.BackColor = Color_List[List1.SelectedIndex];
-        }
-
-        private void R1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (r1.Checked)
+            if (status == true)
             {
-                btn.Location = new Point(300, 100);
-            }   
-            else if (r2.Checked)
-            {
-                btn.Location = new Point(100, 100);
-            }
-        }
-
-        private void Box_lbl_CheckedChanged(object sender, EventArgs e)
-        {
-            if (box_lbl.Checked)
-            {
-                Controls.Add(lbl);
+                Controls.Remove(_btn);
             }
             else
             {
-                Controls.Remove(lbl);
+                MessageBox.Show("Nupp puudub", "Nupp", MessageBoxButtons.OK);
+            }
+        }
+        
+        private void PictureboxONOFF(object sender, EventArgs e)
+        {
+            if (status_pic == true)
+            {
+                Controls.Remove(_pic_box);
+                status_pic = false;
+            }
+            else if (status_pic == false)
+            {
+                Controls.Add(_pic_box);
+                status_pic = true;
+            }
+        }
+        
+        private void List1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox lb = sender as ListBox;
+            lb.BackColor = _Color_List[_List1.SelectedIndex];
+        }
+
+   
+
+        private void Box_lbl_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_box_lbl.Checked)
+            {
+                Controls.Add(_lbl);
+            }
+            else
+            {
+                Controls.Remove(_lbl);
             }
         }
 
         private void Box_btn_CheckedChanged(object sender, EventArgs e)
         {
-            if (box_btn.Checked)
+            if (_box_btn.Checked)
             {
-                Controls.Add(btn);
+                Controls.Add(_btn);
             }
             else
             {
-                Controls.Remove(btn);
+                Controls.Remove(_btn);
             }
         }
 
         private void Btn_Click(object sender, EventArgs e)
         {
-            if (btn.BackColor == Color.Black)
+            if (_btn.BackColor == Color.Black)
             {
-                btn.BackColor = Color.DarkGray;
-                btn.ForeColor = Color.White;
-                lbl.BackColor = Color.DarkGray;
-                lbl.ForeColor = Color.White;
+                _btn.BackColor = Color.DarkGray;
+                _btn.ForeColor = Color.White;
+                _lbl.BackColor = Color.DarkGray;
+                _lbl.ForeColor = Color.White;
             }
             else
             {
-                btn.BackColor = Color.Black;
-                btn.ForeColor = Color.White;
+                _btn.BackColor = Color.Black;
+                _btn.ForeColor = Color.White;
             }
         }
     }
