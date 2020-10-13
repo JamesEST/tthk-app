@@ -23,10 +23,12 @@ namespace tthk_app
         PictureBox pic_box;
         TabControl tabcontroll;
         TabPage tab_1, tab_2, tab_3;
+        ListBox List1;
+        private Color[] Color_List;
         public Form1()
         {
             this.Height = 500;
-            this.Width = 600;
+            this.Width = 800;
             this.Text = "Vorm elementidega";
             tree = new TreeView();
             tree.Dock = DockStyle.Left;
@@ -42,6 +44,9 @@ namespace tthk_app
             tn.Nodes.Add(new TreeNode("Pildikast-Picturebox"));
             tn.Nodes.Add(new TreeNode("Kaart-TabControl"));
             tn.Nodes.Add(new TreeNode("MessageBox"));
+            tn.Nodes.Add(new TreeNode("ListBox"));
+            tn.Nodes.Add(new TreeNode("DataGridView"));
+            tn.Nodes.Add(new TreeNode("Menu"));
             tree.Nodes.Add(tn);
             this.Controls.Add(tree);
 
@@ -155,10 +160,6 @@ namespace tthk_app
                     tabcontroll.Controls.Add(tab_3);
                     tabcontroll.SelectedTab = tab_2;
                 }
-               
-           
-             
-
             }
             else if (e.Node.Text == "MessageBox")
             {
@@ -179,6 +180,63 @@ namespace tthk_app
                     }
                 }
             }
+            else if (e.Node.Text == "ListBox")
+            {
+                string[] Color_Name = new string[] { "Kollane", "Punane", "Sinine", "Roheline" };
+                Color_List = new Color[] { Color.Yellow, Color.Red, Color.Blue, Color.Green };
+                List1 = new ListBox();
+                foreach (var i in Color_List)
+                {
+                    List1.Items.Add(i);
+                }
+                Controls.Add(List1);
+                List1.Location = new Point(350, 50);
+                List1.Width = Color_Name.OrderByDescending(n => n.Length).First().Length * 10;
+                List1.SelectedIndexChanged += List1_SelectedIndexChanged;
+                List1.Height = Color_Name.Length * 15;
+            }
+            else if ( e.Node.Text == "DataGridView")
+            {
+                DataSet data = new DataSet("Näide");
+                data.ReadXml("");
+                DataGridView dgv = new DataGridView();
+                dgv.Location = new Point(200, 200);
+                dgv.Width = 250;
+                dgv.Height = 250;
+                dgv.DataMember = "data";
+                dgv.AutoGenerateColumns = true;
+                dgv.DataSource = data;
+                Controls.Add(dgv);
+            }
+            else if (e.Node.Text == "Menu")
+            {
+                MainMenu menu = new MainMenu();
+                MenuItem menuitem1 = new MenuItem("File");
+                MenuItem menuItem2 = new MenuItem("My");
+                menuitem1.MenuItems.Add("Exit", new EventHandler(menuItem1_exit));
+                menuItem2.MenuItems.Add("Random Color", new EventHandler(RandomColor_Menu));
+                menu.MenuItems.Add(menuitem1);
+                menu.MenuItems.Add(menuItem2);
+                this.Menu = menu;
+            }
+        }
+
+        private void menuItem1_exit(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void RandomColor_Menu(object sender, EventArgs e)
+        {
+            Random rnd = new Random();
+            Color randomColor = Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256));
+            this.BackColor = randomColor; 
+
+        }
+        private void List1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListBox lb = sender as ListBox;
+            lb.BackColor = Color_List[List1.SelectedIndex];
         }
 
         private void R1_CheckedChanged(object sender, EventArgs e)
